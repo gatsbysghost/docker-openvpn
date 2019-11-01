@@ -1,9 +1,10 @@
 # Original credit: https://github.com/jpetazzo/dockvpn
+# Forked from: https://github.com/kylemanna/docker-openvpn
 
 # Smallest base image
 FROM alpine:latest
 
-LABEL maintainer="Kyle Manna <kyle@kylemanna.com>"
+LABEL maintainer="Scott Reu <scott@reu.dev>"
 
 # Testing: pamtester
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
@@ -32,3 +33,13 @@ RUN chmod a+x /usr/local/bin/*
 
 # Add support for OTP authentication using a PAM module
 ADD ./otp/openvpn /etc/pam.d/
+
+# OKTA INTEGRATION (New Stuff Starts Here)
+RUN apk add --update gcc make libc-dev python py-pip git python-dev libffi-dev openssl-dev
+
+cd ~
+RUN git clone https://github.com/gatsbysghost/okta-openvpn.git
+cd ~/okta-openvpn
+RUN make
+RUN pip install -r requirements.txt
+RUN make install
