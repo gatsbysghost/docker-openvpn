@@ -38,9 +38,9 @@ RUN apk add --update gcc make libc-dev python py-pip git python-dev libffi-dev o
 WORKDIR ~
 RUN git clone https://github.com/gatsbysghost/okta-openvpn.git
 WORKDIR ~/okta-openvpn
-RUN make
-RUN pip install -r requirements.txt
-RUN make install
+CMD ["make"]
+CMD ["pip", "install", "-r", "requirements.txt"]
+CMD ["make", "install"]
 
 # Have to move this to here so that the server.conf lines pointing to the okta integration stuff can be interpreted
 WORKDIR /etc/openvpn
