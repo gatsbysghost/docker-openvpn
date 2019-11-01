@@ -26,8 +26,6 @@ VOLUME ["/etc/openvpn"]
 # Internally uses port 1194/udp, remap using `docker run -p 443:1194/tcp`
 EXPOSE 1194/udp
 
-CMD ["ovpn_run"]
-
 ADD ./bin /usr/local/bin
 RUN chmod a+x /usr/local/bin/*
 
@@ -43,3 +41,7 @@ cd ~/okta-openvpn
 RUN make
 RUN pip install -r requirements.txt
 RUN make install
+
+# Have to move this to here so that the server.conf lines pointing to the okta integration stuff can be interpreted
+cd /etc/openvpn
+CMD ["ovpn_run"]
